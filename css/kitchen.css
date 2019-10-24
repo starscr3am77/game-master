@@ -1,0 +1,11 @@
+.bg-img {
+    background: url(/img/kitchen.jpg);
+    background-position-y: -150px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 750px;
+}
+
+.btn-snd {
+    text-align: center;
+}
