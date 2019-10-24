@@ -1,0 +1,250 @@
+<html>
+<head>
+    <title>Distress Call</title>
+    <link rel="stylesheet" href="/css/grid.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/command.css" />
+    <link rel="stylesheet" href="/css/flipclock.css" />
+    <link rel="stylesheet" href="/css/popup.css" />
+    <link rel="stylesheet" href="/css/kitchen.css" />
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="/js/flipclock.min.js"></script>
+    <script type="text/javascript" src="/js/intercom.min.js"></script>
+    <script type="text/javascript" src="/js/remy.marquee.js"></script>
+
+    <script>
+        var clock;
+
+        $(document).ready(function () {
+
+            clock = $(".unity-clock").FlipClock(3600, {
+                clockFace: 'MinuteCounter',
+                countdown: true,
+                autoStart: false,
+            });
+
+            var kitchen = document.getElementById("video");
+            kitchen.onended = function () {
+                $('[data-popup="popup-1"]').fadeOut(350);
+                $("#countdown-timer").show();
+                clock.start();
+                intercom.emit("player", { message: "start" });
+                audio.play();
+            }
+
+            function play() {
+                var audio = document.getElementById("audio");
+                audio.play();
+            }
+
+            $(function () {
+                //----- OPEN
+                $('[data-popup-open]').on('click', function (e) {
+                    var targeted_popup_class = jQuery(this).attr('data-popup-open');
+                    $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+
+                    e.preventDefault();
+                });
+
+                //----- CLOSE
+                $('[data-popup-close]').on('click', function (e) {
+                    var targeted_popup_class = jQuery(this).attr('data-popup-close');
+                    $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+
+                    e.preventDefault();
+                });
+            });
+
+            var intercom = Intercom.getInstance();
+
+            intercom.on('notice', function (data) {
+                //console.log(data.message);
+                //$("#txtMessages").prepend("<p>" + data.message + "</p>");
+                $("#txtMessages").html("<marquee loop='3' behavior='scroll' direction='left' scrollamount='9' width='100%' ><p>" + data.message + "</p></marquee>");
+                Intercom.destroy();
+            });
+
+            intercom.on('sound', function (data) {
+                //console.log(data.message);
+                if (data.message == "play") {
+                    var audio = document.getElementById("audio");
+                    audio.play();
+                } else if (data.message == "stop") {
+                    var audio = document.getElementById("audio");
+                    audio.pause();
+                } else if (data.message == "clue") {
+                    var audio = document.getElementById("clue");
+                    audio.play();
+                    console.log("clue sound");
+                } else if (data.message == "killing") {
+                    var audio = document.getElementById("killing");
+                    audio.play();
+                    console.log(data);
+                    Intercom.destroy();
+                } else if (data.message == "") {
+                    var audio = document.getElementById("");
+                    audio.play();
+                    console.log(data);
+                    Intercom.destroy();
+                } else if (data.message == "") {
+                    var audio = document.getElementById("");
+                    audio.play();
+                    console.log(data);
+                    Intercom.destroy();
+                } else if (data.message == "") {
+                    var audio = document.getElementById("");
+                    audio.play();
+                    console.log(data);
+                    Intercom.destroy();
+                } else if (data.message == "") {
+                    var audio = document.getElementById("");
+                    audio.play();
+                    console.log(data);
+                    Intercom.destroy();
+                } else if (data.message == "") {
+                    var audio = document.getElementById("");
+                    audio.play();
+                    console.log(data);
+                    Intercom.destroy();
+                } else {
+                    console.log("nothing played");
+                }
+            });
+
+            intercom.on('player', function (data) {
+                //console.log(data.message);
+                if (data.message == "start") {
+                    clock.start();
+                } else if (data.message == "stop") {
+                    clock.stop();
+                }
+            });
+
+            intercom.on('movie', function (data) {
+                //console.log(data.message);
+                if (data.message == "play") {
+                    $("#countdown-timer").hide();
+                    $('[data-popup="popup-1"]').fadeIn(350);
+                    $('#video')[0].play();
+                }
+            });
+
+            // Assign button functions
+            $("input[id$='btnStartTimer']").click(function () {
+                clock.start();
+            });
+
+            $("input[id$='btnStopTimer']").click(function () {
+                clock.stop();
+            });
+
+            $("input[id$='btnSend']").click(function () {
+                sendComments();
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+    <div id="suiteBarLeft">
+        <div class="ms-table ms-fullWidth">
+            <div class="ms-tableRow">
+                <div class="ms-tableCell ms-verticalAlignMiddle">
+
+                </div>
+                <div class="ms-core-deltaSuiteLinks" id="DeltaSuiteLinks">
+
+                    <div id="suiteLinksBox">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <a href="/index.html">
+                <span class="unity-header-img-left" nowrap="">
+                    <img src="/img/header.png" height="105" />
+                </span>
+            </a>
+            <a href="/index.html" style="display:none">
+                <span class="unity-header-img-right" nowrap="">
+                    <img src="/img/header.png" height="70" />
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div>
+            <div class="navbar-header-left">
+                <h2>Distress Call</h2>
+            </div>
+        </div>
+    </header>
+
+    <div class="section group controls">
+        <div class="col span_9_of_9" controls>
+            <div id="main" style="padding-top:20px" class="rcorners2 bg-img">
+                <div class="section group">
+                    <div class="col span_9_of_9 modules-player">
+                        <table id="tblTime" class="tblMain" style="border:0">
+                            <tr class="tr-header">
+                                <td>Time Remaining</td>
+                            </tr>
+                            <tr class="tr-content">
+                                <td>
+                                    <div id="countdown-timer" class="unity-clock"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="section group">
+                    <div class="col span_9_of_9 modules-player">
+                        <table id="tblComm" class="tblMain">
+                            <tr class="tr-header">
+                                <td>Communication</td>
+                            </tr>
+                            <tr class="tr-content">
+                                <td>
+                                    <div id="txtMessages" class="ticker">
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup" data-popup="popup-1">
+        <div class="popup-inner">
+            <div class="video-player">
+                <video width="900" id="video">
+                    <source src="/vid/kitchen.mp4" type="video/mp4" />
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio" src="/snd/kitchen/kitchen_ambient.mp3"></audio>
+    <audio id="clue" src="/snd/kitchen/clue.wav"></audio>
+
+    <audio id="" src="/snd/"></audio>
+    <audio id="" src="/snd/"></audio>
+    <audio id="" src="/snd/"></audio>
+    <audio id="" src="/snd/"></audio>
+    <audio id="" src="/snd/"></audio>
+    <audio id="" src="/snd/"></audio>
+    <audio id="" src="/snd/"></audio>
+    <audio id="" src="/snd/"></audio>
+</body>
+</html>
