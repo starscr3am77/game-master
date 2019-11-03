@@ -24,21 +24,41 @@
             clock = $(".unity-clock").FlipClock(3600, {
                 clockFace: 'MinuteCounter',
                 countdown: true,
-                autoStart: false,
+                autoStart: false
             });
 
             var opening = document.getElementById("opening");
+            var light = document.getElementById("light");
+            var jumper = document.getElementById("jumper");
+            var maintenance = document.getElementById("maintenance");
+            
+            opening.muted=true;
+            
             opening.onended = function () {
                 $('[data-popup="popup-1"]').fadeOut(350);
                 $("#countdown-timer").show();
                 clock.start();
-                intercom.emit("player", { message: "start" });
-                //audio.play();
+                intercom.emit("player", {message: "start"});
+                var ajaxurl = 'functions.php',
+                data = { 'action': "start_timer"};
+                $.post(ajaxurl, data, function (response) {
+                    //alert("success");
+                    console.log("started timer");
+                });
             }
             
-            var jumper = document.getElementById("jumper");
-            jumper.onended = function () {
+            light.onended = function () {
                 $('[data-popup="popup-2"]').fadeOut(350);
+                $("#countdown-timer").show();
+            }
+            
+            jumper.onended = function () {
+                $('[data-popup="popup-3"]').fadeOut(350);
+                $("#countdown-timer").show();
+            }
+            
+            maintenance.onended = function () {
+                $('[data-popup="popup-4"]').fadeOut(350);
                 $("#countdown-timer").show();
             }
 
@@ -127,19 +147,28 @@
                     clock.start();
                 } else if (data.message == "stop") {
                     clock.stop();
+                    
                 }
             });
 
             intercom.on('movie', function (data) {
                 //console.log(data.message);
                 if (data.message == "opening") {
-                    $("#countdown-timer").hide();
-                    $('[data-popup="popup-1"]').fadeIn(350);
+                    //$("#countdown-timer").hide();
+                    //$('[data-popup="popup-1"]').fadeIn(350);
                     $('#opening')[0].play();
-                } else if (data.message == "jumper") {
+                } else if (data.message == "light") {
 					$("#countdown-timer").hide();
                     $('[data-popup="popup-2"]').fadeIn(350);
+                    $('#light')[0].play();	
+				} else if (data.message == "jumper") {
+					$("#countdown-timer").hide();
+                    $('[data-popup="popup-3"]').fadeIn(350);
                     $('#jumper')[0].play();	
+				}else if (data.message == "maintenance") {
+					$("#countdown-timer").hide();
+                    $('[data-popup="popup-4"]').fadeIn(350);
+                    $('#maintenance')[0].play();	
 				}
             });
 
@@ -247,8 +276,8 @@
     <div class="popup" data-popup="popup-2">
         <div class="popup-inner">
             <div class="video-player">
-                <video width="900" id="jumper">
-                    <source src="/vid/jumper_cables_hint.mp4" type="video/mp4" />
+                <video width="900" id="light">
+                    <source src="/vid/light_pattern.mp4" type="video/mp4" />
                 </video>
             </div>
         </div>
@@ -256,8 +285,8 @@
     <div class="popup" data-popup="popup-3">
         <div class="popup-inner">
             <div class="video-player">
-                <video width="900" id="light">
-                    <source src="/vid/light_pattern.mp4" type="video/mp4" />
+                <video width="900" id="jumper">
+                    <source src="/vid/jumper_cables_hint.mp4" type="video/mp4" />
                 </video>
             </div>
         </div>

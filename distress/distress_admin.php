@@ -21,8 +21,25 @@
 
             clock = $(".unity-clock").FlipClock(3600, {
                 clockFace: 'MinuteCounter',
+                autoStart: false,
                 countdown: true,
-                autoStart: false
+                callbacks: {
+                    interval: function() {
+                        var time = clock.getTime().time;
+                        //alert(time);
+                        if (time == 3540) {
+                            // Incoming threat detected, battle stations
+                        } else if (time == 2640) {
+                            // Threat neutralized, warp drive malfunction
+                        } else if (time == 1800) {
+                            // 30 minutes until Gorgonite reinforcements arrive
+                        } else if (time == 900) { 
+                            // 15 minutes until Gorgonite reinforcements arrive
+                        } else if (time == 300) {
+                            // 5 minutes until Gorgonite reinforcements arrive
+                        }
+                    }
+                }
             });
 
             console.log(clock.getTime().time);
@@ -33,8 +50,20 @@
                 //console.log(data.message);
                 if (data.message == "start") {
                     clock.start();
+                    var ajaxurl = 'functions.php',
+                    data = { 'action': "start_timer"};
+                    $.post(ajaxurl, data, function (response) {
+                        //alert("success");
+                        console.log("started timer");
+                    });
                 } else if (data.message == "stop") {
                     clock.stop();
+                    var ajaxurl = 'functions.php',
+                    data = { 'action': "stop_timer"};
+                    $.post(ajaxurl, data, function (response) {
+                       //alert("success");
+                       console.log("stopped timer");
+                    });
                 }
             });
 
@@ -58,6 +87,12 @@
             });
 
             $("input[id$='btnMovie']").click(function () {
+                var ajaxurl = 'functions.php',
+                data = { 'action': "opening"};
+                $.post(ajaxurl, data, function (response) {
+                   //alert("success");
+                   console.log("opening");
+                });
                 intercom.emit("movie", { message: "opening" });
             });
 
@@ -110,15 +145,17 @@
 
             $("#clue1").on("click", function () {
                 //$("#txtComm").val("");
-                intercom.emit("movie", { message: "jumper" });
+                intercom.emit("movie", { message: "light" });
             });
 
             $("#clue2").on("click", function () {
-                $("#txtComm").val("");
+                //$("#txtComm").val("");
+                intercom.emit("movie", { message: "jumper" });
             });
 
             $("#clue3").on("click", function () {
-                $("#txtComm").val("");
+                //$("#txtComm").val("");
+                intercom.emit("movie", { message: "maintenance" });
             });
 
             $("#clue4").on("click", function () {
@@ -332,9 +369,9 @@
                                 <td colspan="12">Clues</td>
                             </tr>
                             <tr class="tr-content">
-                                <td><img src="/img/key.png" width="50" id="clue1" title="" style="cursor: pointer;" /></td>
-                                <td><img src="/img/key.png" width="50" id="clue2" title="" style="cursor: pointer;" /></td>
-                                <td><img src="/img/key.png" width="50" id="clue3" title="" style="cursor: pointer;" /></td>
+                                <td><img src="/img/key.png" width="50" id="clue1" title="Jumper Cables" style="cursor: pointer;" /></td>
+                                <td><img src="/img/key.png" width="50" id="clue2" title="Light Pattern" style="cursor: pointer;" /></td>
+                                <td><img src="/img/key.png" width="50" id="clue3" title="Maintenance Guide" style="cursor: pointer;" /></td>
                                 <td><img src="/img/key.png" width="50" id="clue4" title="" style="cursor: pointer;" /></td>
                                 <td><img src="/img/key.png" width="50" id="clue5" title="" style="cursor: pointer;" /></td>
                                 <td><img src="/img/key.png" width="50" id="clue6" title="" style="cursor: pointer;" /></td>
@@ -389,30 +426,5 @@
             </div>
         </div>
     </div>
-	
-    Video Control:
-    <form method="get" action="distress_admin.php">
-    <input type="submit" value="Opening" name="opening" />
-    <input type="submit" value="Fail" name="fail" />
-    <input type="submit" value="Success" name="success" />
-    <input type="submit" value="Jumper" name="jumper" />
-    <input type="submit" value="Light" name="light" />
-    <input type="submit" value="Guide" name="guide" />
-    </form>
-    <?php
-    if(isset($_GET['opening'])){
-    shell_exec('sudo -u www-data python /var/www/html/opening.py');
-    } else if(isset($_GET['fail'])){
-    shell_exec('sudo -u www-data python /var/www/html/fail.py');
-    } else if(isset($_GET['success'])){
-    shell_exec('sudo -u www-data python /var/www/html/success.py');
-    } else if(isset($_GET['jumper'])){
-    shell_exec('sudo -u www-data python /var/www/html/jumper.py');
-    } else if(isset($_GET['light'])){
-    shell_exec('sudo -u www-data python /var/www/html/light.py');
-    } else if(isset($_GET['guide'])){
-    shell_exec('sudo -u www-data python /var/www/html/guide.py');
-    }
-    ?>
 </body>
 </html>
