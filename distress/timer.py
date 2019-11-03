@@ -9,7 +9,7 @@ GPIO.setwarnings(False)
 GPIO.setup(23, GPIO.IN)
 GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-timer = 10
+timer = 60
 timer_override = 0
 failure_played = 0
 success_played = 0
@@ -23,16 +23,16 @@ while True:
     if state == 0 and timer_override == 0:
         timer = timer - 1
     
-    print (timer)
+    #print (timer)
         
     if lever == 0 and success_played == 1:
-        timer = 10
+        timer = 60
         timer_override = 0
         failure_played = 0
         success_played = 0
         
     if failure_played == 1:
-        timer = 10
+        timer = 60
 
     if timer == 0 and failure_played == 0:
         os.system("killall omxplayer.bin")
