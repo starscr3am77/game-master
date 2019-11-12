@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/command.css" />
     <link rel="stylesheet" href="/css/flipclock.css" />
     <link rel="stylesheet" href="/css/popup.css" />
-    <link rel="stylesheet" href="/css/kitchen.css" />
+    <link rel="stylesheet" href="/css/distress.css" />
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -24,16 +24,42 @@
             clock = $(".unity-clock").FlipClock(3600, {
                 clockFace: 'MinuteCounter',
                 countdown: true,
-                autoStart: false,
+                autoStart: false
             });
 
-            var kitchen = document.getElementById("video");
-            kitchen.onended = function () {
+            var opening = document.getElementById("opening");
+            var light = document.getElementById("light");
+            var jumper = document.getElementById("jumper");
+            var maintenance = document.getElementById("maintenance");
+            
+            opening.muted=true;
+            
+            opening.onended = function () {
                 $('[data-popup="popup-1"]').fadeOut(350);
                 $("#countdown-timer").show();
                 clock.start();
-                intercom.emit("player", { message: "start" });
-                audio.play();
+                intercom.emit("player", {message: "start"});
+                var ajaxurl = 'functions.php',
+                data = { 'action': "start_timer"};
+                $.post(ajaxurl, data, function (response) {
+                    //alert("success");
+                    console.log("started timer");
+                });
+            }
+            
+            light.onended = function () {
+                $('[data-popup="popup-2"]').fadeOut(350);
+                $("#countdown-timer").show();
+            }
+            
+            jumper.onended = function () {
+                $('[data-popup="popup-3"]').fadeOut(350);
+                $("#countdown-timer").show();
+            }
+            
+            maintenance.onended = function () {
+                $('[data-popup="popup-4"]').fadeOut(350);
+                $("#countdown-timer").show();
             }
 
             function play() {
@@ -80,8 +106,8 @@
                     var audio = document.getElementById("clue");
                     audio.play();
                     console.log("clue sound");
-                } else if (data.message == "killing") {
-                    var audio = document.getElementById("killing");
+                } else if (data.message == "") {
+                    var audio = document.getElementById("");
                     audio.play();
                     console.log(data);
                     Intercom.destroy();
@@ -121,16 +147,29 @@
                     clock.start();
                 } else if (data.message == "stop") {
                     clock.stop();
+                    
                 }
             });
 
             intercom.on('movie', function (data) {
                 //console.log(data.message);
-                if (data.message == "play") {
-                    $("#countdown-timer").hide();
-                    $('[data-popup="popup-1"]').fadeIn(350);
-                    $('#video')[0].play();
-                }
+                if (data.message == "opening") {
+                    //$("#countdown-timer").hide();
+                    //$('[data-popup="popup-1"]').fadeIn(350);
+                    $('#opening')[0].play();
+                } else if (data.message == "light") {
+					$("#countdown-timer").hide();
+                    $('[data-popup="popup-2"]').fadeIn(350);
+                    $('#light')[0].play();	
+				} else if (data.message == "jumper") {
+					$("#countdown-timer").hide();
+                    $('[data-popup="popup-3"]').fadeIn(350);
+                    $('#jumper')[0].play();	
+				}else if (data.message == "maintenance") {
+					$("#countdown-timer").hide();
+                    $('[data-popup="popup-4"]').fadeIn(350);
+                    $('#maintenance')[0].play();	
+				}
             });
 
             // Assign button functions
@@ -170,7 +209,7 @@
         <div>
             <a href="/index.html">
                 <span class="unity-header-img-left" nowrap="">
-                    <img src="/img/header.png" height="105" />
+                    <img src="/img/distress_header.png" height="100" />
                 </span>
             </a>
             <a href="/index.html" style="display:none">
@@ -184,7 +223,7 @@
     <header>
         <div>
             <div class="navbar-header-left">
-                <h2>Distress Call</h2>
+                <h2>B.S. Entertainment Command Console</h2>
             </div>
         </div>
     </header>
@@ -192,8 +231,44 @@
     <div class="section group controls">
         <div class="col span_9_of_9" controls>
             <div id="main" style="padding-top:20px" class="rcorners2 bg-img">
+
                 <div class="section group">
-                    <div class="col span_9_of_9 modules-player">
+                    <div class="col span_6_of_9 modules-player">
+                        <table id="tblClassification" class="tblMain" style="border:0">
+                            <tr class="tr-header">
+                                <td>Ship Classification</td>
+                                <td>Weapons</td>
+                                <td>Weakness</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Shuttle</td>
+                                <td>None</td>
+                                <td>Phasers; Torpedos</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Fighter</td>
+                                <td>Phasers; Torpedos</td>
+                                <td>Phasers; Torpedos</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Cruiser</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Battleship</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Destroyer</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col span_3_of_9 modules-player">
                         <table id="tblTime" class="tblMain" style="border:0">
                             <tr class="tr-header">
                                 <td>Time Remaining</td>
@@ -206,8 +281,12 @@
                         </table>
                     </div>
                 </div>
+
                 <div class="section group">
-                    <div class="col span_9_of_9 modules-player">
+                    <div class="col span_3_of_9 modules-player">
+
+                    </div>
+                    <div class="col span_6_of_9 modules-player">
                         <table id="tblComm" class="tblMain">
                             <tr class="tr-header">
                                 <td>Communication</td>
@@ -221,6 +300,8 @@
                         </table>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </div>
@@ -228,15 +309,60 @@
     <div class="popup" data-popup="popup-1">
         <div class="popup-inner">
             <div class="video-player">
-                <video width="900" id="video">
-                    <source src="/vid/kitchen.mp4" type="video/mp4" />
+                <video width="900" id="opening">
+                    <source src="/vid/opening.mp4" type="video/mp4" />
+                </video>
+            </div>
+        </div>
+    </div>
+    <div class="popup" data-popup="popup-2">
+        <div class="popup-inner">
+            <div class="video-player">
+                <video width="900" id="light">
+                    <source src="/vid/light_pattern.mp4" type="video/mp4" />
+                </video>
+            </div>
+        </div>
+    </div>
+    <div class="popup" data-popup="popup-3">
+        <div class="popup-inner">
+            <div class="video-player">
+                <video width="900" id="jumper">
+                    <source src="/vid/jumper_cables_hint.mp4" type="video/mp4" />
+                </video>
+            </div>
+        </div>
+    </div>
+    <div class="popup" data-popup="popup-4">
+        <div class="popup-inner">
+            <div class="video-player">
+                <video width="900" id="maintenance">
+                    <source src="/vid/maintenance_guide.mp4" type="video/mp4" />
+                </video>
+            </div>
+        </div>
+    </div>
+    <div class="popup" data-popup="popup-5">
+        <div class="popup-inner">
+            <div class="video-player">
+                <video width="900" id="fail">
+                    <source src="/vid/" type="video/mp4" />
+                </video>
+            </div>
+        </div>
+    </div>
+    <div class="popup" data-popup="popup-6">
+        <div class="popup-inner">
+            <div class="video-player">
+                <video width="900" id="success">
+                    <source src="/vid/" type="video/mp4" />
                 </video>
             </div>
         </div>
     </div>
 
-    <audio id="audio" src="/snd/kitchen/kitchen_ambient.mp3"></audio>
-    <audio id="clue" src="/snd/kitchen/clue.wav"></audio>
+    <audio id="audio" src="/snd/"></audio>
+    <audio id="clue" src="/snd/"></audio>
 
     <audio id="" src="/snd/"></audio>
     <audio id="" src="/snd/"></audio>

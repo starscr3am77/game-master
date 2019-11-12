@@ -209,7 +209,7 @@
         <div>
             <a href="/index.html">
                 <span class="unity-header-img-left" nowrap="">
-                    <img src="/img/header.png" height="105" />
+                    <img src="/img/distress_header.png" height="100" />
                 </span>
             </a>
             <a href="/index.html" style="display:none">
@@ -223,7 +223,7 @@
     <header>
         <div>
             <div class="navbar-header-left">
-                <h2>Distress Call</h2>
+                <h2>B.S. Entertainment Command Console</h2>
             </div>
         </div>
     </header>
@@ -231,8 +231,44 @@
     <div class="section group controls">
         <div class="col span_9_of_9" controls>
             <div id="main" style="padding-top:20px" class="rcorners2 bg-img">
+
                 <div class="section group">
-                    <div class="col span_9_of_9 modules-player">
+                    <div class="col span_6_of_9 modules-player">
+                        <table id="tblClassification" class="tblMain" style="border:0">
+                            <tr class="tr-header">
+                                <td>Ship Classification</td>
+                                <td>Weapons</td>
+                                <td>Weakness</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Shuttle</td>
+                                <td>None</td>
+                                <td>Phasers; Torpedos</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Fighter</td>
+                                <td>Phasers; Torpedos</td>
+                                <td>Phasers; Torpedos</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Cruiser</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Battleship</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                            </tr>
+                            <tr class="tr-content" style="color: white">
+                                <td>Destroyer</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                                <td>Phasers; Torpedos; Nukes</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col span_3_of_9 modules-player">
                         <table id="tblTime" class="tblMain" style="border:0">
                             <tr class="tr-header">
                                 <td>Time Remaining</td>
@@ -245,8 +281,12 @@
                         </table>
                     </div>
                 </div>
+
                 <div class="section group">
-                    <div class="col span_9_of_9 modules-player">
+                    <div class="col span_3_of_9 modules-player">
+
+                    </div>
+                    <div class="col span_6_of_9 modules-player">
                         <table id="tblComm" class="tblMain">
                             <tr class="tr-header">
                                 <td>Communication</td>
@@ -260,6 +300,8 @@
                         </table>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </div>
