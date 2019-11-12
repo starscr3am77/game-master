@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="/css/command.css" />
     <link rel="stylesheet" href="/css/flipclock.css" />
     <link rel="stylesheet" href="/css/popup.css" />
-    <link rel="stylesheet" href="/css/distress.css" />
-
+    <!--<link rel="stylesheet" href="/css/distress.css" />-->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous">
@@ -15,18 +14,14 @@
     <script type="text/javascript" src="/js/flipclock.min.js"></script>
     <script type="text/javascript" src="/js/intercom.min.js"></script>
     <script type="text/javascript" src="/js/remy.marquee.js"></script>
-
     <script>
         var clock;
-
         $(document).ready(function () {
-
             clock = $(".unity-clock").FlipClock(3600, {
                 clockFace: 'MinuteCounter',
                 countdown: true,
                 autoStart: false
             });
-
             var opening = document.getElementById("opening");
             var light = document.getElementById("light");
             var jumper = document.getElementById("jumper");
@@ -61,39 +56,31 @@
                 $('[data-popup="popup-4"]').fadeOut(350);
                 $("#countdown-timer").show();
             }
-
             function play() {
                 var audio = document.getElementById("audio");
                 audio.play();
             }
-
             $(function () {
                 //----- OPEN
                 $('[data-popup-open]').on('click', function (e) {
                     var targeted_popup_class = jQuery(this).attr('data-popup-open');
                     $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
-
                     e.preventDefault();
                 });
-
                 //----- CLOSE
                 $('[data-popup-close]').on('click', function (e) {
                     var targeted_popup_class = jQuery(this).attr('data-popup-close');
                     $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
-
                     e.preventDefault();
                 });
             });
-
             var intercom = Intercom.getInstance();
-
             intercom.on('notice', function (data) {
                 //console.log(data.message);
                 //$("#txtMessages").prepend("<p>" + data.message + "</p>");
                 $("#txtMessages").html("<marquee loop='3' behavior='scroll' direction='left' scrollamount='9' width='100%' ><p>" + data.message + "</p></marquee>");
                 Intercom.destroy();
             });
-
             intercom.on('sound', function (data) {
                 //console.log(data.message);
                 if (data.message == "play") {
@@ -140,7 +127,6 @@
                     console.log("nothing played");
                 }
             });
-
             intercom.on('player', function (data) {
                 //console.log(data.message);
                 if (data.message == "start") {
@@ -150,7 +136,6 @@
                     
                 }
             });
-
             intercom.on('movie', function (data) {
                 //console.log(data.message);
                 if (data.message == "opening") {
@@ -171,22 +156,17 @@
                     $('#maintenance')[0].play();	
 				}
             });
-
             // Assign button functions
             $("input[id$='btnStartTimer']").click(function () {
                 clock.start();
             });
-
             $("input[id$='btnStopTimer']").click(function () {
                 clock.stop();
             });
-
             $("input[id$='btnSend']").click(function () {
                 sendComments();
             });
-
         });
-
     </script>
 </head>
 <body>
@@ -194,18 +174,13 @@
         <div class="ms-table ms-fullWidth">
             <div class="ms-tableRow">
                 <div class="ms-tableCell ms-verticalAlignMiddle">
-
                 </div>
                 <div class="ms-core-deltaSuiteLinks" id="DeltaSuiteLinks">
-
                     <div id="suiteLinksBox">
-
                     </div>
-
                 </div>
             </div>
         </div>
-
         <div>
             <a href="/index.html">
                 <span class="unity-header-img-left" nowrap="">
@@ -219,55 +194,57 @@
             </a>
         </div>
     </div>
-
     <header>
         <div>
             <div class="navbar-header-left">
-                <h2>B.S. Entertainment Command Console</h2>
+                <h2>B.S. Entertainment Captain Console</h2>
             </div>
         </div>
     </header>
-
     <div class="section group controls">
         <div class="col span_9_of_9" controls>
             <div id="main" style="padding-top:20px" class="rcorners2 bg-img">
-
                 <div class="section group">
                     <div class="col span_6_of_9 modules-player">
                         <table id="tblClassification" class="tblMain" style="border:0">
                             <tr class="tr-header">
-                                <td>Ship Classification</td>
-                                <td>Weapons</td>
-                                <td>Weakness</td>
+                                <td>Ship<br/> Classification</td>
+                                <td>Enemy<br/> Weapons</td>
+                                <td>Enemy<br/> Weakness</td>
+                                <td>B.S. Entertainment<br/> Shields</td>
                             </tr>
                             <tr class="tr-content" style="color: white">
                                 <td>Shuttle</td>
                                 <td>None</td>
                                 <td>Phasers; Torpedos</td>
+                                <td>Front: 100% Rear: 100%</td>
                             </tr>
                             <tr class="tr-content" style="color: white">
                                 <td>Fighter</td>
                                 <td>Phasers; Torpedos</td>
                                 <td>Phasers; Torpedos</td>
+                                <td>Front: 125% Rear: 100%</td>
                             </tr>
                             <tr class="tr-content" style="color: white">
                                 <td>Cruiser</td>
                                 <td>Phasers; Torpedos; Nukes</td>
-                                <td>Phasers; Torpedos; Nukes</td>
+                                <td>Torpedos x 2; Nukes x 1</td>
+                                <td>Front: 135% Rear: 90%</td>
                             </tr>
                             <tr class="tr-content" style="color: white">
                                 <td>Battleship</td>
                                 <td>Phasers; Torpedos; Nukes</td>
-                                <td>Phasers; Torpedos; Nukes</td>
+                                <td>Torpedos x 4; Nukes x 2</td>
+                                <td>Front: 150% Rear: 75%</td>
                             </tr>
                             <tr class="tr-content" style="color: white">
                                 <td>Destroyer</td>
                                 <td>Phasers; Torpedos; Nukes</td>
-                                <td>Phasers; Torpedos; Nukes</td>
+                                <td>Torpedos x 8; Nukes x 4</td>
+                                <td>Front: 150% Rear: 150%</td>
                             </tr>
                         </table>
                     </div>
-
                     <div class="col span_3_of_9 modules-player">
                         <table id="tblTime" class="tblMain" style="border:0">
                             <tr class="tr-header">
@@ -281,12 +258,8 @@
                         </table>
                     </div>
                 </div>
-
                 <div class="section group">
-                    <div class="col span_3_of_9 modules-player">
-
-                    </div>
-                    <div class="col span_6_of_9 modules-player">
+                    <div class="col span_9_of_9 modules-player">
                         <table id="tblComm" class="tblMain">
                             <tr class="tr-header">
                                 <td>Communication</td>
@@ -300,12 +273,9 @@
                         </table>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
-
     <div class="popup" data-popup="popup-1">
         <div class="popup-inner">
             <div class="video-player">
@@ -360,10 +330,8 @@
             </div>
         </div>
     </div>
-
     <audio id="audio" src="/snd/"></audio>
     <audio id="clue" src="/snd/"></audio>
-
     <audio id="" src="/snd/"></audio>
     <audio id="" src="/snd/"></audio>
     <audio id="" src="/snd/"></audio>
